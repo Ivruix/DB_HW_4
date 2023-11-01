@@ -62,7 +62,7 @@ CREATE TABLE "BookCat" (
 
 CREATE TABLE "Category" (
 	"CategoryName" VARCHAR(255) NOT NULL,
-	"ParentCategory" VARCHAR(255) NOT NULL,
+	"ParentCategory" VARCHAR(255),
 	CONSTRAINT "Category_pk" PRIMARY KEY ("CategoryName")
 );
 
@@ -78,3 +78,48 @@ ALTER TABLE "BookCat" ADD CONSTRAINT "BookCat_fk0" FOREIGN KEY ("ISBN") REFERENC
 ALTER TABLE "BookCat" ADD CONSTRAINT "BookCat_fk1" FOREIGN KEY ("CategoryName") REFERENCES "Category"("CategoryName");
 
 ALTER TABLE "Category" ADD CONSTRAINT "Category_fk0" FOREIGN KEY ("ParentCategory") REFERENCES "Category"("CategoryName");
+
+INSERT INTO "Publisher" ("PubName", "Address") VALUES
+    ('123 Book Group', '12 Arbat St, Moscow, Russia'),
+    ('Best Books', '17 Tverskaya St, Moscow, Russia'),
+    ('ABC Publishing', '4 Nikolskaya St, Moscow, Russia');
+
+INSERT INTO "Book" ("ISBN", "Title", "Author", "PagesNum", "PubName", "PubYear") VALUES
+    ('ISBN001', 'Secrets of the Labyrinth', 'John Doe', 200, '123 Book Group', 2020),
+    ('ISBN002', 'The Great Flying Mountain', 'Alice Johnson', 250, 'Best Books', 2019),
+    ('ISBN003', 'Climbing Huge Mountains', 'Eva Brown', 180, 'ABC Publishing', 2021);
+
+INSERT INTO "Copy" ("ISBN", "CopyNumber", "Shelf", "Position") VALUES
+    ('ISBN001', 1, 1, 1),
+    ('ISBN001', 2, 1, 2),
+    ('ISBN002', 1, 2, 1),
+    ('ISBN003', 1, 3, 1);
+
+INSERT INTO "Reader" ("FirstName", "LastName", "Address", "BirthDate") VALUES
+    ('Иван', 'Иванов', '7 Prostornaya St, Moscow, Russia', '1990-05-15'),
+    ('Денис', 'Краснов', '34 Arbat St, Moscow, Russia', '1985-08-20'),
+    ('Bob', 'Johnson', '789 Oak St, London, UK', '2000-02-10');
+
+INSERT INTO "Category" ("CategoryName", "ParentCategory") VALUES
+    ('Fiction', NULL),
+    ('Fantasy', 'Fiction'),
+    ('Mystery', 'Fiction'),
+    ('Science Fiction', 'Fiction'),
+    ('Non-Fiction', NULL),
+    ('Travel', 'Non-Fiction'),
+    ('Mountains', 'Non-Fiction');
+
+INSERT INTO "BookCat" ("ISBN", "CategoryName") VALUES
+    ('ISBN001', 'Fantasy'),
+    ('ISBN001', 'Mystery'),
+    ('ISBN002', 'Mountains'),
+    ('ISBN002', 'Science Fiction'),
+    ('ISBN003', 'Mountains'),
+    ('ISBN003', 'Travel');
+
+INSERT INTO "Borrowing" ("ReaderID", "ISBN", "CopyNumber", "ReturnDate")
+VALUES
+    (1, 'ISBN001', 2, '2023-09-14'),
+    (2, 'ISBN003', 1, '2023-10-07'),
+    (1, 'ISBN002', 1, '2024-03-12'),
+    (3, 'ISBN001', 1, '2024-05-22');
